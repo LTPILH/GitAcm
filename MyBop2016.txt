@@ -1,6 +1,11 @@
 题目: http://studentclub.msra.cn/bop2016/topic/
 
-组队的情况就不说了...说一下问题
-1.我只是专注于怎么优化路径的查找，没有去想访问第三方Api也需要优化，我用的HttpClient,有个预热机制，而且频繁访问应该用长连接，具体看http://www.cnblogs.com/dudu/p/csharp-httpclient-attention.html。
-2.而且寻找一个点到另一点的路径时，应该针对特定的目标点寻找特定的中间节点，减少无效节点的访问，我以为都差不多，没有优化这些细节。
-3....
+组队的情况就不说了...最后成绩是复赛的79。
+膜拜了一下进决赛的菊苣的代码，看了看差距：
+1.访问为微软的Api，我们采用HttpClient,但是http采用tcp连接，每次握手都很耗时间，应该采用长连接（根本没想过。。），也有队用Socket长连接。
+2.菊苣自己实现了Json库，对读入的JSONArray一次性全部解析成节点，我们队是每次要用了就调用其自带的get()，（感觉被自己蠢哭T^T）。
+3.当从AuId扩展到Id时，应该顺便获取Id的所有信息，即AuId->Id->{RId,AuId,FId,CId,JId},相当于一次性扩展了2层。
+4.对于寻找{AuId,FId,CId,JId}->findId->Id,可以用组合查询And(RId=Id,Composite(AA.AuId/F.FId/..=xxx))查询所有的findId。这一点我们倒是想到了。
+5.其余点就是直接暴力扩展
+
+总结：不关注细微处的优化。。。

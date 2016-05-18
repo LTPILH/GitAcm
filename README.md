@@ -1,3 +1,1 @@
-#! GitAcm
-
-Something about acm
+Something about acm!
